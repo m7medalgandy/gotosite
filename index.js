@@ -4,9 +4,9 @@ const host = '0.0.0.0';
 const port = process.env.PORT || 8080;
 
 cors_proxy.createServer({
-  originWhitelist: [],
-  requireHeader: [], // قم بإزالة الشرط الخاص بالرؤوس المطلوبة
-  removeHeaders: ['cookie', 'cookie2']
+  originWhitelist: [], // السماح بأي مصدر
+  requireHeader: [], // إزالة الشرط الخاص بالرؤوس المطلوبة
+  // لا تزيل رؤوس الكوكيز
 }).listen(port, host, function() {
   console.log('Running CORS Anywhere on ' + host + ':' + port);
 });
