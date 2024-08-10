@@ -11,14 +11,25 @@ app.get('*', async (req, res) => {
   try {
     const targetUrl = req.url.slice(1); // إزالة '/' من بداية الـ URL
     
-    const response = await fetch(targetUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Cookie': 'open=true'
-      }
+    // إنشاء كائن Headers جديد
+    const headers = new fetch.Headers({
+      'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.9',
     });
+
+    // إجراء طلب أولي للحصول على الكوكيز
+    const initialResponse = await fetch(targetUrl, { headers, redirect: 'manual' });
+    
+    // استخراج الكوكيز من الاستجابة
+    const cookies = initialResponse.headers.raw()['set-cookie'];
+    
+    if (cookies) {
+      headers.set('Cookie', cookies.join('; '));
+    }
+
+    // إجراء طلب ثانٍ باستخدام الكوكيز
+    const response = await fetch(targetUrl, { headers });
 
     let html = await response.text();
     
