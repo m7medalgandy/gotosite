@@ -9,14 +9,26 @@ app.get('*', async (req, res) => {
   try {
     const targetUrl = req.url.slice(1); // إزالة '/' من بداية الـ URL
     
-    const headers = {
+        const headers = {
       'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
       'Accept-Language': 'en-US,en;q=0.9',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Connection': 'keep-alive',
+      'Upgrade-Insecure-Requests': '1',
+      'Cache-Control': 'max-age=0',
+      'Sec-Fetch-Site': 'none',
+      'Sec-Fetch-Mode': 'navigate',
+      'Sec-Fetch-User': '?1',
+      'Sec-Fetch-Dest': 'document',
+      'CF-IPCountry': 'US',
+      'CF-Connecting-IP': req.ip,
     };
 
-    const response = await fetch(targetUrl, { headers });
-    
+    const response = await fetch(targetUrl, { 
+      headers: headers,
+      redirect: 'follow',
+    });
     const contentType = response.headers.get('content-type');
     
     if (contentType && contentType.includes('image')) {
