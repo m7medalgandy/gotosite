@@ -10,7 +10,7 @@ app.get('*', async (req, res) => {
     const targetUrl = req.url.slice(1); // إزالة '/' من بداية الـ URL
     
         const headers = {
-      'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+      'User-Agent': 'Googlebot-Image/1.0',
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
       'Accept-Language': 'en-US,en;q=0.9',
       'Accept-Encoding': 'gzip, deflate, br',
